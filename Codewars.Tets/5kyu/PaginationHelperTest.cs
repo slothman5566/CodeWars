@@ -1,7 +1,4 @@
 ﻿using CodeWars._5kyu;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 
 namespace Codewars.Tets._5kyu
 {

@@ -5,7 +5,8 @@
     public class PaginationHelper<T>
     {
         // TODO: Complete this class
-
+        private readonly IList<T> _items;
+        private readonly int _pageSize;
         /// <summary>
         /// Constructor, takes in a list of items and the number of items that fit within a single page
         /// </summary>
@@ -13,7 +14,8 @@
         /// <param name="itemsPerPage">The number of items that fit within a single page</param>
         public PaginationHelper(IList<T> collection, int itemsPerPage)
         {
-
+            _items = collection;
+            _pageSize = itemsPerPage;
         }
 
         /// <summary>
@@ -23,7 +25,7 @@
         {
             get
             {
-                return 0;
+                return _items.Count;
             }
         }
 
@@ -34,7 +36,15 @@
         {
             get
             {
-                return 0;
+                if (_items.Count == 0)
+                {
+                    return 0;
+                }
+                if (_items.Count % _pageSize == 0)
+                {
+                    return _items.Count / _pageSize;
+                }
+                return _items.Count / _pageSize + 1;
             }
         }
 
@@ -45,7 +55,13 @@
         /// <returns>The number of items on the specified page or -1 for pageIndex values that are out of range</returns>
         public int PageItemCount(int pageIndex)
         {
-            return 0;
+            if (pageIndex * _pageSize >= _items.Count || pageIndex < 0)
+            {
+                return -1;
+            }
+
+            var count = _items.Count - (pageIndex * _pageSize);
+            return count > _pageSize ? _pageSize : count;
         }
 
         /// <summary>
@@ -55,7 +71,12 @@
         /// <returns>The zero-based page index of the page containing the item at the given item index or -1 if the item index is out of range</returns>
         public int PageIndex(int itemIndex)
         {
-            return 0;
+            if (itemIndex >= _items.Count || itemIndex < 0)
+            {
+                return -1;
+            }
+            return itemIndex / _pageSize;
+
         }
     }
 }
